@@ -18,7 +18,7 @@ export default function SalesCompare() {
 
   // ★ MockAPI から売上データを取得
   useEffect(() => {
-    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/sales")
       .then((res) => res.json())
       .then((data) => setSales(data))
       .catch((err) => console.error("APIエラー:", err));
