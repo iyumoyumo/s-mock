@@ -20,7 +20,7 @@ export default function PersonalCompare() {
 
   // MockAPI から sales と employees を取得
   useEffect(() => {
-    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/sales")
       .then((res) => res.json())
       .then((data) => setSales(data));
 
