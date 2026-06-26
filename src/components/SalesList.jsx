@@ -17,14 +17,14 @@ export default function SalesSummary() {
   // 社員一覧（MockAPI）
   useEffect(() => {
     axios
-      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
+      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/employees")
       .then((res) => setEmployees(res.data));
   }, []);
 
   // 売上一覧（MockAPI）
   useEffect(() => {
     axios
-      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
+      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/sales")
       .then((res) => setSales(res.data));
   }, []);
 
