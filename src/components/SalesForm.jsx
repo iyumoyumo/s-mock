@@ -11,7 +11,7 @@ export default function SalesForm({ setScreen }) {
 
   // 社員一覧を取得（MockAPI）
   useEffect(() => {
-    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/employees")
       .then(res => res.json())
       .then(data => setEmployees(data));
   }, []);
