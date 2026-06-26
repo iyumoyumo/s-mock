@@ -23,7 +23,7 @@ export default function SalesForm({ setScreen }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales", {
+    await fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/sales", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
