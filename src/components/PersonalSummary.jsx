@@ -8,7 +8,7 @@ export default function PersonalSummary() {
 
   // 売上データ取得（MockAPI）
   useEffect(() => {
-    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/sales")
       .then((res) => res.json())
       .then((data) => setSales(data))
       .catch((err) => console.error("APIエラー:", err));
@@ -16,7 +16,7 @@ export default function PersonalSummary() {
 
   // 社員データ取得（MockAPI）
   useEffect(() => {
-    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((err) => console.error("社員APIエラー:", err));
