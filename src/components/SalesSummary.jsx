@@ -6,7 +6,9 @@ export default function SalesSummary() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const salesRes = await fetch("http://localhost:8000/api/sales");
+      const salesRes = await fetch(
+        "https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales"
+      );
       setSales(await salesRes.json());
     };
     fetchData();
@@ -43,7 +45,7 @@ export default function SalesSummary() {
 
     if (!grouped[period]) grouped[period] = 0;
 
-    grouped[period] += Number(s.amount);
+    grouped[period] += Number(s.amount); // ← MockAPI は文字列の可能性あり
   });
 
   // ▼ 表示用に並び替え
