@@ -15,16 +15,16 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip,
 export default function PersonalCompare() {
   const [sales, setSales] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [selected, setSelected] = useState(""); // ← 社員番号が入る
+  const [selected, setSelected] = useState(""); // employeeId が入る
   const [mode, setMode] = useState("month");
 
-  // DB から sales と employees を取得
+  // MockAPI から sales と employees を取得
   useEffect(() => {
-    fetch("http://localhost:8000/api/sales")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
       .then((res) => res.json())
       .then((data) => setSales(data));
 
-    fetch("http://localhost:8000/api/employees")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data));
   }, []);
@@ -49,8 +49,8 @@ export default function PersonalCompare() {
     return `${year}年${month}月 第${weekNumber}週`;
   };
 
-  // 🔥 選択された社員番号の売上だけ抽出
-  const filtered = sales.filter((s) => s.employee_id === selected);
+  // 🔥 選択された社員の売上だけ抽出（employeeId に変更）
+  const filtered = sales.filter((s) => s.employeeId === selected);
 
   // 🔥 週・月・年で集計
   const grouped = {};
@@ -63,14 +63,14 @@ export default function PersonalCompare() {
         : getYear(s.sale_date);
 
     if (!grouped[key]) grouped[key] = 0;
-    grouped[key] += s.amount;
+    grouped[key] += Number(s.amount);
   });
 
   const labels = Object.keys(grouped);
   const values = Object.values(grouped);
 
-  // 選択中の社員名を取得
-  const selectedEmployee = employees.find((e) => e.employee_id === selected);
+  // 選択中の社員名を取得（employeeId に変更）
+  const selectedEmployee = employees.find((e) => e.employeeId === selected);
 
   const chartData = {
     labels,
@@ -89,7 +89,7 @@ export default function PersonalCompare() {
     <div className="bg-white p-6 rounded shadow w-full">
       <h2 className="text-2xl font-bold mb-4">売上比較（個人別）</h2>
 
-      {/* 🔥 社員番号を value にする */}
+      {/* 🔥 社員番号（employeeId）を value にする */}
       <select
         className="border p-2 mb-4"
         value={selected}
@@ -97,7 +97,7 @@ export default function PersonalCompare() {
       >
         <option value="">社員を選択</option>
         {employees.map((e) => (
-          <option key={e.id} value={e.employee_id}>
+          <option key={e.id} value={e.employeeId}>
             {e.name}
           </option>
         ))}
