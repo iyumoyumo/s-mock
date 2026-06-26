@@ -16,9 +16,9 @@ export default function SalesCompare() {
   const [sales, setSales] = useState([]);
   const [mode, setMode] = useState("month"); // week | month | year
 
-  // ★ DB から売上データを取得
+  // ★ MockAPI から売上データを取得
   useEffect(() => {
-    fetch("http://localhost:8000/api/sales")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
       .then((res) => res.json())
       .then((data) => setSales(data))
       .catch((err) => console.error("APIエラー:", err));
@@ -56,13 +56,17 @@ export default function SalesCompare() {
         : getYear(s.sale_date);
 
     if (!grouped[key]) grouped[key] = 0;
-    grouped[key] += s.amount;
+    grouped[key] += Number(s.amount); // ← MockAPI は文字列の可能性があるので数値化
   });
 
   // ★ 期間順にソート
   const summary = Object.entries(grouped).sort((a, b) => {
-    const da = new Date(a[0].replace("年", "-").replace("月", "-").replace(" 第", "-").replace("週", ""));
-    const db = new Date(b[0].replace("年", "-").replace("月", "-").replace(" 第", "-").replace("週", ""));
+    const da = new Date(
+      a[0].replace("年", "-").replace("月", "-").replace(" 第", "-").replace("週", "")
+    );
+    const db = new Date(
+      b[0].replace("年", "-").replace("月", "-").replace(" 第", "-").replace("週", "")
+    );
     return da - db;
   });
 
