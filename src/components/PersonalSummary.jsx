@@ -3,28 +3,28 @@ import { useState, useEffect } from "react";
 export default function PersonalSummary() {
   const [sales, setSales] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [selected, setSelected] = useState(""); // ← 社員番号を入れる
+  const [selected, setSelected] = useState(""); // employeeId を入れる
   const [mode, setMode] = useState("month");
 
-  // 売上データ取得
+  // 売上データ取得（MockAPI）
   useEffect(() => {
-    fetch("http://localhost:8000/api/sales")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
       .then((res) => res.json())
       .then((data) => setSales(data))
       .catch((err) => console.error("APIエラー:", err));
   }, []);
 
-  // 社員データ取得
+  // 社員データ取得（MockAPI）
   useEffect(() => {
-    fetch("http://localhost:8000/api/employees")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((err) => console.error("社員APIエラー:", err));
   }, []);
 
   // ★ 社員番号 → 社員名
-  const getEmployeeName = (employee_id) => {
-    const emp = employees.find((e) => e.employee_id === employee_id);
+  const getEmployeeName = (employeeId) => {
+    const emp = employees.find((e) => e.employeeId === employeeId);
     return emp ? emp.name : "";
   };
 
@@ -49,8 +49,8 @@ export default function PersonalSummary() {
     return `${year}年${month}月 第${weekNumber}週`;
   };
 
-  // ★ 選択された社員番号の売上だけ抽出
-  const filtered = sales.filter((s) => s.employee_id === selected);
+  // ★ 選択された社員番号の売上だけ抽出（employeeId に変更）
+  const filtered = sales.filter((s) => s.employeeId === selected);
 
   // ★ 集計処理
   const grouped = {};
@@ -72,7 +72,7 @@ export default function PersonalSummary() {
     <div className="bg-white p-6 rounded shadow w-full">
       <h2 className="text-2xl font-bold mb-4">売上集計（個人別）</h2>
 
-      {/* 社員選択（社員番号を value にする） */}
+      {/* 社員選択（employeeId を value にする） */}
       <select
         className="border p-2 mb-4"
         value={selected}
@@ -80,7 +80,7 @@ export default function PersonalSummary() {
       >
         <option value="">社員を選択</option>
         {employees.map((e) => (
-          <option key={e.employee_id} value={e.employee_id}>
+          <option key={e.id} value={e.employeeId}>
             {e.name}
           </option>
         ))}
