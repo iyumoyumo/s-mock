@@ -8,7 +8,7 @@ export default function EmployeeList() {
 
   useEffect(() => {
     axios
-      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
+      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/employees")
       .then((res) => setEmployees(res.data))
       .catch((err) => console.error("社員取得エラー:", err));
   }, []);
