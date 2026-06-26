@@ -18,7 +18,7 @@ export default function EmployeeForm() {
 
     try {
       const res = await axios.post(
-        "https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees",
+        "https://6a3dc1420443193a1a0b039e.mockapi.io/employees",
         form
       );
       alert("登録成功: " + JSON.stringify(res.data));
