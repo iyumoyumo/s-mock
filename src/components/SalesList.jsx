@@ -8,29 +8,25 @@ export default function SalesSummary() {
 
   const [mode, setMode] = useState("week");
 
-  const now = new Date();
-  //const [yearSelect, setYearSelect] = useState(now.getFullYear());
-  //const [monthSelect, setMonthSelect] = useState(now.getMonth() + 1);
-  //const [weekSelect, setWeekSelect] = useState(1);
-
-const [yearSelect, setYearSelect] = useState(null);
-const [monthSelect, setMonthSelect] = useState(null);
-const [weekSelect, setWeekSelect] = useState(null);
+  const [yearSelect, setYearSelect] = useState(null);
+  const [monthSelect, setMonthSelect] = useState(null);
+  const [weekSelect, setWeekSelect] = useState(null);
 
   const navigate = useNavigate();
 
-  // 社員一覧
+  // 社員一覧（MockAPI）
   useEffect(() => {
-    axios.get("http://localhost:8000/api/employees")
+    axios
+      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
       .then((res) => setEmployees(res.data));
   }, []);
 
-  // 売上一覧
-  //useEffect(() => {
-    //axios.get("http://localhost:8000/api/sales")
-      //.then((res) => setSales(res.data));
-  //}, []);
-
+  // 売上一覧（MockAPI）
+  useEffect(() => {
+    axios
+      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales")
+      .then((res) => setSales(res.data));
+  }, []);
 
   // ISO週番号
   const getWeek = (d) => {
@@ -49,35 +45,26 @@ const [weekSelect, setWeekSelect] = useState(null);
     );
   };
 
- // 売上一覧（sales を取得）
-useEffect(() => {
-  axios.get("http://localhost:8000/api/sales")
-    .then((res) => {
-      setSales(res.data);
-    });
-}, []);
+  // sales が入ったら初期値セット
+  useEffect(() => {
+    if (sales.length > 0) {
+      const years = [...new Set(sales.map((s) => new Date(s.sale_date).getFullYear()))];
+      setYearSelect(years[0]);
 
-// sales が入ったら初期値セット
-useEffect(() => {
-  if (sales.length > 0) {
-    const years = [...new Set(sales.map(s => new Date(s.sale_date).getFullYear()))];
-    setYearSelect(years[0]);
+      const firstDate = new Date(sales[0].sale_date);
+      setMonthSelect(firstDate.getMonth() + 1);
+      setWeekSelect(getWeek(firstDate));
+    }
+  }, [sales]);
 
-    const firstDate = new Date(sales[0].sale_date);
-    setMonthSelect(firstDate.getMonth() + 1);
-    setWeekSelect(getWeek(firstDate));
-  }
-}, [sales]);
-
- 
-  // 個人別の期間売上（社員番号で集計）
+  // 個人別の期間売上（employeeId で集計）
   const personalTotals = (() => {
     const totals = {};
-    employees.forEach((emp) => (totals[emp.employee_id] = 0));
+    employees.forEach((emp) => (totals[emp.employeeId] = 0));
 
     sales.forEach((s) => {
       const date = new Date(s.sale_date);
-      const empId = s.employee_id; // ← 社員番号
+      const empId = s.employeeId;
 
       let match = false;
 
@@ -103,9 +90,9 @@ useEffect(() => {
     return totals;
   })();
 
-  // 売上がある社員だけ抽出（社員番号で判定）
+  // 売上がある社員だけ抽出
   const employeesWithTotals = employees.filter(
-    (emp) => personalTotals[emp.employee_id] > 0
+    (emp) => personalTotals[emp.employeeId] > 0
   );
 
   const yearList = [...new Set(sales.map((s) => new Date(s.sale_date).getFullYear()))];
@@ -138,7 +125,9 @@ useEffect(() => {
           className="border p-2 rounded"
         >
           {yearList.map((y) => (
-            <option key={y} value={y}>{y}年</option>
+            <option key={y} value={y}>
+              {y}年
+            </option>
           ))}
         </select>
 
@@ -149,7 +138,9 @@ useEffect(() => {
             className="border p-2 rounded"
           >
             {weekList.map((w) => (
-              <option key={w} value={w}>{w}週</option>
+              <option key={w} value={w}>
+                {w}週
+              </option>
             ))}
           </select>
         )}
@@ -161,7 +152,9 @@ useEffect(() => {
             className="border p-2 rounded"
           >
             {monthList.map((m) => (
-              <option key={m} value={m}>{m}月</option>
+              <option key={m} value={m}>
+                {m}月
+              </option>
             ))}
           </select>
         )}
@@ -179,23 +172,24 @@ useEffect(() => {
 
         <tbody>
           {employeesWithTotals.map((emp) => (
-            <tr key={emp.employee_id} className="hover:bg-gray-100">
+            <tr key={emp.employeeId} className="hover:bg-gray-100">
               <td className="border p-2">{emp.name}</td>
               <td className="border p-2">
-                {personalTotals[emp.employee_id].toLocaleString()} 円
+                {personalTotals[emp.employeeId].toLocaleString()} 円
               </td>
 
               <td className="border p-2 space-x-2">
                 <button
                   className="px-3 py-1 bg-blue-500 text-white rounded"
                   onClick={() =>
-                    navigate(`/sales/detail?employee_id=${emp.employee_id}&mode=${mode}&year=${yearSelect}&month=${monthSelect}&week=${weekSelect}`)
+                    navigate(
+                      `/sales/detail?employee_id=${emp.employeeId}&mode=${mode}&year=${yearSelect}&month=${monthSelect}&week=${weekSelect}`
+                    )
                   }
                 >
                   詳細
                 </button>
               </td>
-
             </tr>
           ))}
         </tbody>
