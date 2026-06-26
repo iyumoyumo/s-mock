@@ -7,7 +7,7 @@ export default function SalesSummary() {
   useEffect(() => {
     const fetchData = async () => {
       const salesRes = await fetch(
-        "https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales"
+        "https://6a3dc1420443193a1a0b039e.mockapi.io/sales"
       );
       setSales(await salesRes.json());
     };
