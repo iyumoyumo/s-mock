@@ -24,7 +24,7 @@ export default function PersonalCompare() {
       .then((res) => res.json())
       .then((data) => setSales(data));
 
-    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data));
   }, []);
