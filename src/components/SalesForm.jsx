@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 export default function SalesForm({ setScreen }) {
   const [employees, setEmployees] = useState([]);
   const [form, setForm] = useState({
-    employee_id: "",
+    employeeId: "",
     sale_date: "",
     amount: "",
     memo: "",
   });
 
-  // 社員一覧を取得
+  // 社員一覧を取得（MockAPI）
   useEffect(() => {
-    fetch("http://localhost:8000/api/employees")
+    fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
       .then(res => res.json())
       .then(data => setEmployees(data));
   }, []);
@@ -23,7 +23,7 @@ export default function SalesForm({ setScreen }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:8000/api/sales", {
+    await fetch("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/sales", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -42,15 +42,15 @@ export default function SalesForm({ setScreen }) {
         <div>
           <label className="block font-semibold mb-1">社員</label>
           <select
-            name="employee_id"
+            name="employeeId"
             className="w-full border p-2 rounded"
-            value={form.employee_id}
+            value={form.employeeId}
             onChange={handleChange}
             required
           >
             <option value="">選択してください</option>
             {employees.map(emp => (
-              <option key={emp.id} value={emp.employee_id}>
+              <option key={emp.id} value={emp.employeeId}>
                 {emp.name}
               </option>
             ))}
