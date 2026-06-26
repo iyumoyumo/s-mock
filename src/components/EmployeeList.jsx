@@ -8,7 +8,7 @@ export default function EmployeeList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/employees")
+      .get("https://6a3dc1420443193a1a0b039e.mockapi.io/api/v1/employees")
       .then((res) => setEmployees(res.data))
       .catch((err) => console.error("社員取得エラー:", err));
   }, []);
@@ -31,7 +31,7 @@ export default function EmployeeList() {
         <tbody>
           {employees.map((emp) => (
             <tr key={emp.id} className="hover:bg-gray-100">
-              <td className="border p-2">{emp.employee_id}</td>
+              <td className="border p-2">{emp.employeeId}</td>
               <td className="border p-2">{emp.name}</td>
               <td className="border p-2">{emp.email}</td>
               <td className="border p-2">{emp.department}</td>
