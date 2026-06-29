@@ -8,10 +8,13 @@ export default function EmployeeDelete() {
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔵 削除対象の社員データ取得
+  // MockAPI のベースURL
+  const API_URL = "https://6a3dc1420443193a1a0b039e.mockapi.io/employees";
+
+  // 🔵 削除対象の社員データ取得（MockAPI）
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/employees/${id}`)
+      .get(`${API_URL}/${id}`)
       .then((res) => {
         setEmployee(res.data);
         setLoading(false);
@@ -30,9 +33,9 @@ export default function EmployeeDelete() {
     if (!window.confirm("本当に削除しますか？")) return;
 
     try {
-      await axios.delete(`http://localhost:8000/api/employees/${id}`);
+      await axios.delete(`${API_URL}/${id}`);
 
-      alert("削除しました");
+      alert("MockAPI から削除しました");
       navigate("/employees"); // 一覧へ戻る
     } catch (error) {
       console.error("削除エラー:", error);
@@ -42,7 +45,7 @@ export default function EmployeeDelete() {
 
   return (
     <div className="p-4 bg-white rounded shadow w-full">
-      <h2 className="text-xl font-bold mb-4">社員削除</h2>
+      <h2 className="text-xl font-bold mb-4">社員削除（MockAPI）</h2>
 
       <p className="mb-4">以下の社員を削除しますか？</p>
 
