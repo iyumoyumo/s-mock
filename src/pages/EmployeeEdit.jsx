@@ -9,10 +9,13 @@ export default function EmployeeEdit() {
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔵 社員データ取得
+  // MockAPI のベースURL
+  const API_URL = "https://6a3dc1420443193a1a0b039e.mockapi.io/employees";
+
+  // 🔵 MockAPIから社員データ取得
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/employees/${id}`)
+      .get(`${API_URL}/${id}`)
       .then((res) => {
         setEmployee(res.data);
         setLoading(false);
@@ -31,10 +34,10 @@ export default function EmployeeEdit() {
     if (!window.confirm("この内容で保存しますか？")) return;
 
     try {
-      await axios.put(`http://localhost:8000/api/employees/${id}`, employee);
+      await axios.put(`${API_URL}/${id}`, employee);
 
-      alert("保存しました");
-      navigate("/employees"); // 一覧へ戻る
+      alert("MockAPI に保存しました");
+      navigate("/employees");
     } catch (error) {
       console.error("保存エラー:", error);
       alert("保存に失敗しました");
@@ -43,19 +46,19 @@ export default function EmployeeEdit() {
 
   return (
     <div className="p-4 bg-white rounded shadow w-full">
-      <h2 className="text-xl font-bold mb-4">社員編集</h2>
+      <h2 className="text-xl font-bold mb-4">社員編集（MockAPI）</h2>
 
-{/* 社員ID */}
-<div className="mb-4">
-  <label className="block mb-1">社員ID</label>
-  <input
-    className="border p-2 rounded w-full"
-    value={employee.employeeId}
-    onChange={(e) =>
-      setEmployee({ ...employee, employeeId: e.target.value })
-    }
-  />
-</div>
+      {/* 社員ID */}
+      <div className="mb-4">
+        <label className="block mb-1">社員ID</label>
+        <input
+          className="border p-2 rounded w-full"
+          value={employee.employeeId}
+          onChange={(e) =>
+            setEmployee({ ...employee, employeeId: e.target.value })
+          }
+        />
+      </div>
 
       {/* 名前 */}
       <div className="mb-4">
@@ -74,7 +77,7 @@ export default function EmployeeEdit() {
         className="px-4 py-2 bg-blue-600 text-white rounded"
         onClick={handleSave}
       >
-        保存
+        保存（MockAPI）
       </button>
     </div>
   );
